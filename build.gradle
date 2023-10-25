@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'com.nikhilz.rest'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 
 java {
     sourceCompatibility = '11'
