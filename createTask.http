@@ -1,0 +1,8 @@
+POST localhost:8080/task
+Content-Type: application/json
+
+{
+  "name": "Nikhil",
+  "description": "description",
+  "complexity": "HARD"
+}

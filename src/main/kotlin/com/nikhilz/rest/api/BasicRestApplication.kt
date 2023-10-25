@@ -9,3 +9,5 @@ class BasicRestApplication
 fun main(args: Array<String>) {
     runApplication<BasicRestApplication>(*args)
 }
+
+
