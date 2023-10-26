@@ -17,7 +17,7 @@
 
 FROM openjdk:11
 # Set the working directory inside the container
-WORKDIR /app
+WORKDIR /api
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java", "-jar", "/app.jar"]
