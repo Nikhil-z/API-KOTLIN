@@ -29,6 +29,11 @@ class TasksController {
         return taskRepository.findById(id).orElseThrow { TaskNotFoundException(id) }
     }
 
+    @GetMapping("/tasks")
+    fun getTasks(): MutableIterable<Task> {
+        return taskRepository.findAll()
+    }
+
 }
 
 @ControllerAdvice
