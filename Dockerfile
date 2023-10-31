@@ -14,6 +14,7 @@
 
 # Command to run your application
 #CMD ["java", "-jar", "api-0.0.1.jar"]
+COPY src/main/resources /app/resources
 
 FROM gradle:7.4.1 AS build
 COPY --chown=gradle:gradle . /home/gradle/src
