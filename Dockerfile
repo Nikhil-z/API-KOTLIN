@@ -1,7 +1,5 @@
 # syntax=docker/dockerfile:1
 
-# Use a base image with a JRE (Java Runtime Environment)
-#FROM openjdk:11
 
 # Set the working directory inside the container
 #WORKDIR /app
@@ -14,7 +12,7 @@
 
 # Command to run your application
 #CMD ["java", "-jar", "api-0.0.1.jar"]
-COPY src/main/resources /app/resources
+
 
 FROM gradle:7.4.1 AS build
 COPY --chown=gradle:gradle . /home/gradle/src
@@ -22,6 +20,7 @@ WORKDIR /home/gradle/src
 RUN gradle build
 
 
+# Use a base image with a JRE (Java Runtime Environment)
 FROM openjdk:11
 
 EXPOSE 8080
