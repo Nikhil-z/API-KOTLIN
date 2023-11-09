@@ -47,7 +47,7 @@ jobs:
           cp build/libs/$JAR_FILE $APP_DIR/
           
           # Create a systemd service file
-          cat <<EOF > /etc/systemd/system/$APP_NAME.service
+          sudo tee /etc/systemd/system/$APP_NAME.service > /dev/null <<EOF
           [Unit]
           Description=Spring Boot Application
           After=syslog.target
@@ -67,12 +67,12 @@ jobs:
           EOF
           
           # Reload systemd and start the application
-          systemctl daemon-reload
-          systemctl start $APP_NAME
-          systemctl enable $APP_NAME
+          sudo systemctl daemon-reload
+          sudo systemctl start $APP_NAME
+          sudo systemctl enable $APP_NAME
           
           # Nginx configuration
-          cat <<EOF > $NGINX_CONFIG_DIR/$APP_NAME
+          sudo tee $NGINX_CONFIG_DIR/$APP_NAME > /dev/null <<EOF
           server {
               listen 80;
               server_name api.geeknuts.in;
