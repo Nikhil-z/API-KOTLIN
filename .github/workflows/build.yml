@@ -86,7 +86,8 @@ jobs:
           EOF
           
           # Create a symbolic link to enable the Nginx site
-          ln -s $NGINX_CONFIG_DIR/$APP_NAME $NGINX_SITES_ENABLED/
+          sudo ln -s $NGINX_CONFIG_DIR/$APP_NAME $NGINX_SITES_ENABLED/
+
           
           # Reload Nginx to apply the new configuration
           systemctl reload nginx
