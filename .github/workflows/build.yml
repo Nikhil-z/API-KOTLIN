@@ -22,7 +22,7 @@ jobs:
 
       - name: List Directories on Remote Server
         run: |
-          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@65.2.171.237 ls
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@api.geeknuts.in ls
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
