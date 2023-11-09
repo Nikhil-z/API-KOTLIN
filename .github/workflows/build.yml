@@ -16,20 +16,20 @@ jobs:
       - name: Set up SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
-          key: ${{ secrets.office }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Build JAR
         run: ./gradlew build
 
       - name: Transfer JAR file to Server
         run: |
-          scp -i ${{ secrets.office }} build/libs/your-spring-app.jar ubandu@3.6.96.89:/path/on/remote/server
+          scp -i ${{ secrets.office }} build/libs/your-spring-app.jar ubuntu@ip-172-26-1-31:/www/wwwroot/api.geeknuts.in
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.office }}
-          SSH_USERNAME: ubandu@3.6.96.89
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY}}
+          SSH_USERNAME: ubuntu@ip-172-26-1-31
       - name: SSH into Remote Server and Run JAR
         run: |
-          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.SSH_USERNAME}}@api.geeknuts.in 'cd /path/on/remote/server && java -jar your-spring-app.jar'
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.SSH_USERNAME}}@api.geeknuts.in 'cd /www/wwwroot/api.geeknuts.in && java -jar your-spring-app.jar'
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.office }}
-          SSH_USERNAME: ubandu@3.6.96.89
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_USERNAME: ubuntu@ip-172-26-1-31
