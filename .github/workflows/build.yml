@@ -22,9 +22,10 @@ jobs:
 
       - name: List Directories on Remote Server
         run: |
-          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@api.geeknuts.in ls
+                ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@65.2.171.237 'ls /www/wwwroot'
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+                SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
 
       - name: Build JAR
         run: ./gradlew build
