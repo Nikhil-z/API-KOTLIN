@@ -25,12 +25,12 @@ jobs:
 
       - name: Transfer JAR file to Server
         run: |
-          scp -i ${{ secrets.SSH_PRIVATE_KEY }} build/libs/your-spring-app.jar ubuntu@65.2.171.237:/www/wwwroot/api.geeknuts.in
+          scp -i ${{ secrets.SSH_PRIVATE_KEY }} build/libs/api-0.0.1.jar ubuntu@65.2.171.237:/www/wwwroot/api.geeknuts.in
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
     
       - name: SSH into Remote Server and Run JAR
         run: |
-          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@65.2.171.237 'cd /www/wwwroot/api.geeknuts.in && java -jar your-spring-app.jar'
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@65.2.171.237 'cd /www/wwwroot/api.geeknuts.in && java -jar api-0.0.1.jar'
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
