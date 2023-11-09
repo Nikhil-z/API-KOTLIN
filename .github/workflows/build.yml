@@ -25,7 +25,8 @@ jobs:
 
       - name: List Local Directories
         run: |
-          ls 
+          ls /build
+          ls /src
       - name: List Directories on Remote Server
         run: |
           ssh -i ${{ secrets.SSH_PRIVATE_KEY }} 65.2.171.237 'ls /www/wwwroot'
