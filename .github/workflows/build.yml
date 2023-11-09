@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Deploy to Subdomain
 
 on:
   push:
@@ -6,90 +6,31 @@ on:
       - main  # Adjust to your main branch name
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Java
-        uses: actions/setup-java@v2
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0
         with:
-          java-version: 11
-          distribution: 'adopt'  # Specify the Linux distribution you are using
-          architecture: x64
-          check-latest: false
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Build with Gradle
+      - name: Build JAR
         run: ./gradlew build
 
-      - name: Deploy to Server (replace with your deployment script)
+      - name: Transfer JAR file to Server
         run: |
-         
-  
-          APP_NAME="api-application"
-          JAR_FILE="api-0.0.1.jar"
-          APP_DIR="/opt/$APP_NAME"
-          NGINX_CONFIG_DIR="/etc/nginx/sites-available"
-          NGINX_SITES_ENABLED="/etc/nginx/sites-enabled"
+          scp -i ${{ secrets.SSH_PRIVATE_KEY }} build/libs/your-spring-app.jar ssh-username@api.geeknuts.in:/path/on/remote/server
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_USERNAME: ssh-username
 
-          # Build and package the Spring Boot application
-          ./gradlew build
-          
-          # Create a backup of the previous application directory
-          if [ -d "$APP_DIR" ]; then
-            mv $APP_DIR "$APP_DIR.bak"
-          fi
-          
-          # Create a new application directory and copy the JAR file
-          mkdir -p $APP_DIR
-          cp build/libs/$JAR_FILE $APP_DIR/
-          
-          # Create a systemd service file
-          sudo tee /etc/systemd/system/$APP_NAME.service > /dev/null <<EOF
-          [Unit]
-          Description=Spring Boot Application
-          After=syslog.target
-          
-          [Service]
-          User=your-user
-          WorkingDirectory=$APP_DIR
-          ExecStart=/usr/bin/java -jar $JAR_FILE
-          SuccessExitStatus=143
-          Restart=always
-          StandardOutput=syslog
-          StandardError=syslog
-          SyslogIdentifier=$APP_NAME
-          
-          [Install]
-          WantedBy=multi-user.target
-          EOF
-          
-          # Reload systemd and start the application
-          sudo systemctl daemon-reload
-          sudo systemctl start $APP_NAME
-          sudo systemctl enable $APP_NAME
-          
-          # Nginx configuration
-          sudo tee $NGINX_CONFIG_DIR/$APP_NAME > /dev/null <<EOF
-          server {
-              listen 80;
-              server_name api.geeknuts.in;
-          
-              location / {
-                  proxy_pass http://localhost:8080;  # Adjust the port if needed
-                  proxy_set_header Host $host;
-                  proxy_set_header X-Real-IP $remote_addr;
-              }
-          }
-          EOF
-          
-          # Create a symbolic link to enable the Nginx site
-          sudo ln -s $NGINX_CONFIG_DIR/$APP_NAME $NGINX_SITES_ENABLED/
-
-          
-          # Reload Nginx to apply the new configuration
-          systemctl reload nginx
-
-
+      - name: SSH into Remote Server and Run JAR
+        run: |
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.SSH_USERNAME}}@api.geeknuts.in 'cd /path/on/remote/server && java -jar your-spring-app.jar'
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_USERNAME: ssh-username
