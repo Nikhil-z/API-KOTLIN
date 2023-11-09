@@ -25,7 +25,7 @@ jobs:
 
       - name: Transfer JAR file to Server
         run: |
-          scp -i ${{ secrets.SSH_PRIVATE_KEY }} home/gradle/src/build/libs/api-0.0.1.jar ubuntu@65.2.171.237:/www/wwwroot/api.geeknuts.in
+          scp -i ${{ secrets.SSH_PRIVATE_KEY }} build/libs/api-0.0.1.jar ubuntu@65.2.171.237:/www/wwwroot/api.geeknuts.in
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
     
