@@ -20,6 +20,12 @@ jobs:
           username: ubuntu  # Replace with your SSH username
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: List Directories on Remote Server
+        run: |
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} api.geeknuts.in 'ls www/wwwroot'
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: Build JAR
         run: ./gradlew build
 
