@@ -23,6 +23,14 @@ jobs:
       - name: Build JAR
         run: ./gradlew build
 
+
+      - name: List Directories on Remote Server
+        run: |
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@65.2.171.237 'ls /www/wwwroot'
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+
       - name: Transfer JAR file to Server
         run: |
           scp -i ${{ secrets.SSH_PRIVATE_KEY }} build/libs/api-0.0.1.jar ubuntu@65.2.171.237:/www/wwwroot/api.geeknuts.in
