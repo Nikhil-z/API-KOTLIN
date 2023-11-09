@@ -17,7 +17,7 @@ jobs:
         uses: appleboy/ssh-action@v1.0.0
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-
+          host: api.geeknuts.in  # Replace with your server's hostname or IP address
       - name: Build JAR
         run: ./gradlew build
 
