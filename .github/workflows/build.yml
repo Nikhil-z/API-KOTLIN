@@ -1,0 +1,91 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main  # Adjust to your main branch name
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: 11
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Deploy to Server (replace with your deployment script)
+        run: |
+         
+  
+          APP_NAME="api-application"
+          JAR_FILE="api-0.0.1.jar"
+          APP_DIR="/opt/$APP_NAME"
+          NGINX_CONFIG_DIR="/etc/nginx/sites-available"
+          NGINX_SITES_ENABLED="/etc/nginx/sites-enabled"
+
+          # Build and package the Spring Boot application
+          ./gradlew build
+          
+          # Create a backup of the previous application directory
+          if [ -d "$APP_DIR" ]; then
+            mv $APP_DIR "$APP_DIR.bak"
+          fi
+          
+          # Create a new application directory and copy the JAR file
+          mkdir -p $APP_DIR
+          cp build/libs/$JAR_FILE $APP_DIR/
+          
+          # Create a systemd service file
+          cat <<EOF > /etc/systemd/system/$APP_NAME.service
+          [Unit]
+          Description=Spring Boot Application
+          After=syslog.target
+          
+          [Service]
+          User=your-user
+          WorkingDirectory=$APP_DIR
+          ExecStart=/usr/bin/java -jar $JAR_FILE
+          SuccessExitStatus=143
+          Restart=always
+          StandardOutput=syslog
+          StandardError=syslog
+          SyslogIdentifier=$APP_NAME
+          
+          [Install]
+          WantedBy=multi-user.target
+          EOF
+          
+          # Reload systemd and start the application
+          systemctl daemon-reload
+          systemctl start $APP_NAME
+          systemctl enable $APP_NAME
+          
+          # Nginx configuration
+          cat <<EOF > $NGINX_CONFIG_DIR/$APP_NAME
+          server {
+              listen 80;
+              server_name api.geeknuts.in;
+          
+              location / {
+                  proxy_pass http://localhost:8080;  # Adjust the port if needed
+                  proxy_set_header Host $host;
+                  proxy_set_header X-Real-IP $remote_addr;
+              }
+          }
+          EOF
+          
+          # Create a symbolic link to enable the Nginx site
+          ln -s $NGINX_CONFIG_DIR/$APP_NAME $NGINX_SITES_ENABLED/
+          
+          # Reload Nginx to apply the new configuration
+          systemctl reload nginx
+
+
