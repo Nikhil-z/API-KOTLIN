@@ -23,7 +23,7 @@ jobs:
 
       - name: Transfer JAR file to Server
         run: |
-          scp -i ${{ secrets.office }} build/libs/your-spring-app.jar ssh-username@api.geeknuts.in:/path/on/remote/server
+          scp -i ${{ secrets.office }} build/libs/your-spring-app.jar ubandu@3.6.96.89:/path/on/remote/server
         env:
           SSH_PRIVATE_KEY: ${{ secrets.office }}
           SSH_USERNAME: ubandu@3.6.96.89
