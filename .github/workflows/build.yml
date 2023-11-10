@@ -22,8 +22,9 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: SSH into Remote Server and Run JAR
-        run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ec2-65-2-171-237.ap-south-1.compute.amazonaws.com 'cd /www/wwwroot/api.geeknuts.in && java -jar api-0.0.1.jar'
+      - name: Check SSH connection
+        run: ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@ec2-65-2-171-237.ap-south-1.compute.amazonaws.com "echo 'SSH connection successful'"
+
 
       - name: Build JAR
         run: ./gradlew build
