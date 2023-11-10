@@ -23,7 +23,7 @@ jobs:
 
       - name: Set Permission
         run: |
-          scp -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@ip-172-26-1-31 "cd /var"
+          scp -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@ip-172-26-1-31 "cd /www"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           
