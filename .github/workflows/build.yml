@@ -22,6 +22,8 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Transfer JAR file to Server
+        run: scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} build/libs/api-0.0.1.jar ubuntu@65.2.171.237:/var/www/wwwroot/api.geeknuts.in
 
       - name: Build JAR
         run: ./gradlew build
