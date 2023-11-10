@@ -21,6 +21,13 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
 
+      - name: Set Permission
+        run: |
+          scp -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@ip-172-26-1-31 "chmod -R 755 /www/wwwroot/api.geeknuts.in"
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          
+
       - name: Build JAR
         run: ./gradlew build
 
@@ -31,8 +38,7 @@ jobs:
 
       - name: Transfer JAR file to Server
         run: |
-          scp -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@ip-172-26-1-31 "chmod -R 755 /www/wwwroot/api.geeknuts.in"
-          # scp -i ${{ secrets.SSH_PRIVATE_KEY }} build/libs/api-0.0.1.jar ubuntu@ip-172-26-1-31:/var/www/wwwroot/api.geeknuts.in
+          scp -i ${{ secrets.SSH_PRIVATE_KEY }} build/libs/api-0.0.1.jar ubuntu@ip-172-26-1-31:/var/www/wwwroot/api.geeknuts.in
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
     
