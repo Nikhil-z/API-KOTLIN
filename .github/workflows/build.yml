@@ -22,8 +22,6 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Set Permission
-        run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@ip-172-26-1-31 "cd www"
 
       - name: Build JAR
         run: ./gradlew build
