@@ -18,12 +18,12 @@ jobs:
       - name: Set up SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: 65.2.171.237
+          host: ec2-65-2-171-237.ap-south-1.compute.amazonaws.com
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: SSH into Remote Server and Run JAR
-        run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@65.2.171.237 'cd /www/wwwroot/api.geeknuts.in && java -jar api-0.0.1.jar'
+        run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ec2-65-2-171-237.ap-south-1.compute.amazonaws.com 'cd /www/wwwroot/api.geeknuts.in && java -jar api-0.0.1.jar'
 
       - name: Build JAR
         run: ./gradlew build
