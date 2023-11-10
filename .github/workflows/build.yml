@@ -20,16 +20,6 @@ jobs:
           username: ubuntu  # Replace with your SSH username
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: List Directories on Remote Server
-        run: |
-                ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@ip-172-26-1-31  << EOF
-                ls -l
-                # Additional deployment steps if needed
-                ls
-                EOF
-        env:
-                SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-
 
       - name: Build JAR
         run: ./gradlew build
@@ -38,7 +28,6 @@ jobs:
         run: |
           ls build/libs
           ls src
-     
 
       - name: Transfer JAR file to Server
         run: |
