@@ -23,7 +23,7 @@ jobs:
 
       - name: Set Permission
         run: |
-          scp -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@ip-172-26-1-31 "chmod -R 755 /www/wwwroot/api.geeknuts.in"
+          scp -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@ip-172-26-1-31 "cd /var"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           
