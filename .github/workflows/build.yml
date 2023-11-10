@@ -22,7 +22,7 @@ jobs:
 
       - name: List Directories on Remote Server
         run: |
-                ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@ip-172-26-1-31:/www/wwwroot/api.geeknuts.in  << EOF
+                ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@ip-172-26-1-31  << EOF
                 ls -l
                 # Additional deployment steps if needed
                 ls
