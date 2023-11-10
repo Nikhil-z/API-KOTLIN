@@ -3,11 +3,13 @@ name: Deploy to Subdomain
 on:
   push:
     branches:
-      - main  # Adjust to your main branch name
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
     steps:
       - name: Checkout code
@@ -16,22 +18,12 @@ jobs:
       - name: Set up SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: 65.2.171.237  # Replace with your server's hostname or IP address
-          username: ubuntu  # Replace with your SSH username
+          host: 65.2.171.237
+          username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-
-
       - name: Set Permission
-        run: |
-          scp -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@ip-172-26-1-31 "cd www"
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-     
-    script:
-          - echo "SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY"
-          - /path/to/ssh -i /path/to/your/private-key-file ubuntu@ip-172-26-1-31 "cd www"
-          
+        run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@ip-172-26-1-31 "cd www"
 
       - name: Build JAR
         run: ./gradlew build
@@ -42,13 +34,7 @@ jobs:
           ls src
 
       - name: Transfer JAR file to Server
-        run: |
-          scp -i ${{ secrets.SSH_PRIVATE_KEY }} build/libs/api-0.0.1.jar ubuntu@ip-172-26-1-31:/var/www/wwwroot/api.geeknuts.in
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-    
+        run: scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} build/libs/api-0.0.1.jar ubuntu@ip-172-26-1-31:/var/www/wwwroot/api.geeknuts.in
+
       - name: SSH into Remote Server and Run JAR
-        run: |
-          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@65.2.171.237 'cd /www/wwwroot/api.geeknuts.in && java -jar api-0.0.1.jar'
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@65.2.171.237 'cd /www/wwwroot/api.geeknuts.in && java -jar api-0.0.1.jar'
