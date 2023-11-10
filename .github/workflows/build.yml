@@ -23,7 +23,7 @@ jobs:
       - name: List Directories on Remote Server
         run: |
                 ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@65.2.171.237  << EOF
-                cd /var/www/api.geeknuts.in
+                cd /www/wwwroot/api.geeknuts.in
                 # Additional deployment steps if needed
                 ls
                 EOF
