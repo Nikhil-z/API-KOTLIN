@@ -24,7 +24,7 @@ jobs:
       - name: Build docker image
         run: docker build -t dashpan/api .
 
-      - name: Publish image to docker hub
+      - name: Publish image to the docker hub
         run: docker push dashpan/api:latest
 
   deploy:
