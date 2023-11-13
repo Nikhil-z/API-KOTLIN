@@ -32,10 +32,10 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Pull Image from docker hub
-        run: docker pull dashpan/api:latest
+        run: sudo docker pull dashpan/api:latest
 
       - name: Delete old container
-        run: docker rm -f dashpan-api-container
+        run: sudo docker rm -f dashpan-api-container
 
       - name: Run docker container
-        run: docker run -d -p 8080:8080 --name dashpan-api-container dashpan/api
+        run: sudo docker run -d -p 8080:8080 --name dashpan-api-container dashpan/api
