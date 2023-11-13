@@ -33,7 +33,7 @@ jobs:
           target: '/var/www/wwwroot/api.geeknuts.in'
 
       - name: SSH into Lightsail and restart app
-        uses: appleboy/ssh-action@v0.8.0
+        uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.LIGHTSAIL_HOST }}
           username: ${{ secrets.LIGHTSAIL_USERNAME }}
