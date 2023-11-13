@@ -39,6 +39,4 @@ jobs:
           username: ${{ secrets.LIGHTSAIL_USERNAME }}
           key: ${{ secrets.LIGHTSAIL_PRIVATE_KEY }}
           port: ${{ secrets.LIGHTSAIL_PORT }}
-          script: |
-            sudo systemctl stop api.service || true
-            sudo systemctl start api.service
+          
