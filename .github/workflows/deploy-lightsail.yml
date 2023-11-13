@@ -29,8 +29,9 @@ jobs:
           username: ${{ secrets.LIGHTSAIL_USERNAME }}
           key: ${{ secrets.LIGHTSAIL_PRIVATE_KEY }}
           port: ${{ secrets.LIGHTSAIL_PORT }}
-          source: 'build/libs/api-0.0.1.jar'
-          target: '/www/wwwroot/api.geeknuts.in'
+          script: |
+              scp -i ${{ secrets.LIGHTSAIL_PRIVATE_KEY }} ./build/libs/api-0.0.1.jar ${{ secrets.LIGHTSAIL_USERNAME }}@${{ secrets.LIGHTSAIL_HOST }}:/www/wwwroot/api.geeknuts.in/api-0.0.1.jar
+
 
       - name: SSH into Lightsail and restart app
         uses: appleboy/ssh-action@v1.0.0
