@@ -23,5 +23,15 @@ jobs:
         run: docker build -t dashpan/api .
       - name: Publish image to docker hub
         run: docker push dashpan/api:latest
+ deploy:
+    needs: build
+    runs-on: [aws-ec2]
+    steps:
+      - name: Pull Image from docker hub
+        run: docker pull dashpan/api:latest
+      - name: Delete old container
+        run: docker rm -f springboot-example-container
+      - name: Run docker container
+        run: docker run -d -p 8080:8080 --name springboot-example-container dashpan/api
 
  
