@@ -23,7 +23,7 @@ jobs:
         run: ./gradlew build -x test
 
       - name: Copy JAR to Lightsail
-        uses: appleboy/remote-ssh-action@v2
+        uses: appleboy/remote-ssh-action@@v1.0.0
         with:
           host: ${{ secrets.LIGHTSAIL_HOST }}
           username: ${{ secrets.LIGHTSAIL_USERNAME }}
