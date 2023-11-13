@@ -30,7 +30,7 @@ jobs:
           key: ${{ secrets.LIGHTSAIL_PRIVATE_KEY }}
           port: ${{ secrets.LIGHTSAIL_PORT }}
           script: |
-                 scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} build/libs/api-0.0.1.jar ubuntu@ip-172-26-1-31:/var/www/wwwroot/api.geeknuts.in
+                 scp -i build/libs/api-0.0.1.jar ${{ secrets.LIGHTSAIL_USERNAME }}@${{ secrets.LIGHTSAIL_HOST }}:/www/wwwroot/api.geeknuts.in < /dev/null
                 
 
       - name: SSH into Lightsail and restart app
