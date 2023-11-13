@@ -23,18 +23,17 @@ jobs:
         run: ./gradlew build -x test
 
       - name: Copy JAR to Lightsail
-        uses: appleboy/ssh-action@v1.0.0
+        uses: appleboy/ssh-action@v2
         with:
           host: ${{ secrets.LIGHTSAIL_HOST }}
           username: ${{ secrets.LIGHTSAIL_USERNAME }}
           key: ${{ secrets.LIGHTSAIL_PRIVATE_KEY }}
           port: ${{ secrets.LIGHTSAIL_PORT }}
           script: |
-              scp -i ${{ secrets.LIGHTSAIL_PRIVATE_KEY }} ./build/libs/api-0.0.1.jar ${{ secrets.LIGHTSAIL_USERNAME }}@${{ secrets.LIGHTSAIL_HOST }}:/www/wwwroot/api.geeknuts.in/api-0.0.1.jar
-
+                scp -i /dev/stdin ./build/libs/api-0.0.1.jar ${{ secrets.LIGHTSAIL_USERNAME }}@${{ secrets.LIGHTSAIL_HOST }}:/www/wwwroot/api.geeknuts.in/api-0.0.1.jar < /dev/null
 
       - name: SSH into Lightsail and restart app
-        uses: appleboy/ssh-action@v1.0.0
+        uses: appleboy/ssh-action@v2
         with:
           host: ${{ secrets.LIGHTSAIL_HOST }}
           username: ${{ secrets.LIGHTSAIL_USERNAME }}
