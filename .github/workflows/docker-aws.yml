@@ -35,7 +35,7 @@ jobs:
         run: docker pull dashpan/api:latest
 
       - name: Delete old container
-        run: docker rm -f springboot-example-container
+        run: docker rm -f dashpan-api-container
 
       - name: Run docker container
-        run: docker run -d -p 8080:8080 --name springboot-example-container dashpan/api
+        run: docker run -d -p 8080:8080 --name dashpan-api-container dashpan/api
