@@ -1,0 +1,38 @@
+name: Deploy to Subdomain
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2 
+
+      
+      - name: Build JAR
+        run: ./gradlew build
+
+      - name: List Local Directories
+        run: |
+          ls build/libs
+          ls src
+
+      - name: Build & Deploy
+        env:
+            PRIVATE_KEY: ${{ secrets.LIGHTSAIL_PRIVATE_KEY }}
+            HOSTNAME: ${{ secrets.LIGHTSAIL_HOST }}
+            USER_NAME: ${{ secrets.LIGHTSAIL_USERNAME }}
+      
+        run: |
+          echo "$PRIVATE_KEY" > private_key && sudo chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} 'sudo -s << EOF
+          cd /www/wwwroot/backend.geeknuts.in
+          scp -o StrictHostKeyChecking=no -i private_key build/libs/api-0.0.1.jar .
+          EOF'
+
+
+      - name: Transfer JAR file to Server
+        run: scp -o StrictHostKeyChecking=no -i private_key build/libs/api-0.0.1.jar ${USER_NAME}@${HOSTNAME}:/www/wwwroot/backend.geeknuts.in
