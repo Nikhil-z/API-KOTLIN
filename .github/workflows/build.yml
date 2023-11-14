@@ -35,7 +35,7 @@ jobs:
           ls src
 
       - name: Transfer JAR file to Server
-        run: scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} build/libs/api-0.0.1.jar ubuntu@65.2.171.237:/www/wwwroot/api.geeknuts.in
+        run: scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} build/libs/api-0.0.1.jar ${USER_NAME}@${HOSTNAME}:/www/wwwroot/api.geeknuts.in
 
      # - name: SSH into Remote Server and Run JAR
        # run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@65.2.171.237 'cd /www/wwwroot/api.geeknuts.in && java -jar api-0.0.1.jar'
