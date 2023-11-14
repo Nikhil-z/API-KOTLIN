@@ -23,7 +23,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Check SSH connection
-        run: ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@ip-172-26-1-31 "echo 'SSH connection successful'"
+        run: ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@65.2.171.237 "echo 'SSH connection successful'"
 
 
       - name: Build JAR
@@ -35,7 +35,7 @@ jobs:
           ls src
 
       - name: Transfer JAR file to Server
-        run: scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} build/libs/api-0.0.1.jar root@ip-172-26-1-31:/www/wwwroot/api.geeknuts.in
+        run: scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} build/libs/api-0.0.1.jar ubuntu@65.2.171.237:/www/wwwroot/api.geeknuts.in
 
-      - name: SSH into Remote Server and Run JAR
-        run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} root@ip-172-26-1-31 'cd /www/wwwroot/api.geeknuts.in && java -jar api-0.0.1.jar'
+     # - name: SSH into Remote Server and Run JAR
+       # run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@65.2.171.237 'cd /www/wwwroot/api.geeknuts.in && java -jar api-0.0.1.jar'
