@@ -11,6 +11,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2 
 
+      
+      - name: Build JAR
+        run: ./gradlew build
+
+      - name: List Local Directories
+        run: |
+          ls build/libs
+          ls src
+
       - name: Build & Deploy
         env:
             PRIVATE_KEY: ${{ secrets.LIGHTSAIL_PRIVATE_KEY }}
@@ -24,13 +33,6 @@ jobs:
           scp -o StrictHostKeyChecking=no -i private_key build/libs/api-0.0.1.jar .
           EOF'
 
-      - name: Build JAR
-        run: ./gradlew build
-
-      - name: List Local Directories
-        run: |
-          ls build/libs
-          ls src
 
       - name: Transfer JAR file to Server
         run: scp -o StrictHostKeyChecking=no -i private_key build/libs/api-0.0.1.jar ${USER_NAME}@${HOSTNAME}:/www/wwwroot/backend.geeknuts.in
