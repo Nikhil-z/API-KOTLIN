@@ -19,7 +19,22 @@ bootJar {
     archiveFileName = 'api-0.0.1.jar'
     destinationDirectory = file('build/libs')
 }
+// Define the source directory for static files
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/resources", "src/main/resources/static"]
+        }
+    }
+}
 
+// Configuration to copy resources to the JAR
+jar {
+    duplicatesStrategy = 'exclude' // Set the duplicates strategy to exclude
+    from(sourceSets.main.resources) {
+        include("static/**") // Include only static files
+    }
+}
 
 repositories {
     mavenCentral()
