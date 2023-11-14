@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
@@ -23,7 +23,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Check SSH connection
-        run: ssh -i ${{ secrets.SSH_PRIVATE_KEY }} root@ip-172-26-1-31 "echo 'SSH connection successful'"
+        run: ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@ip-172-26-1-31 "echo 'SSH connection successful'"
 
 
       - name: Build JAR
