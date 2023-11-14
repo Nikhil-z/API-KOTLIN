@@ -8,22 +8,22 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2 
+      - name: Build & Deploy
+        env:
+            PRIVATE_KEY: ${{ secrets.LIGHTSAIL_PRIVATE_KEY }}
+            HOSTNAME: ${{secrets.LIGHTSAIL_HOST}}
+            USER_NAME: ${{secrets.LIGHTSAIL_USERNAME}}
+      
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+ 
 
-      - name: Set up SSH
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: 65.2.171.237
-          username: ubuntu
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Check SSH connection
-        run: ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@65.2.171.237 "echo 'SSH connection successful ff'"
+      #- name: Check SSH connection
+        #run: ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@65.2.171.237 "echo 'SSH connection successful ff'"
 
 
       - name: Build JAR
